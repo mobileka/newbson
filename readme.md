@@ -2,13 +2,84 @@
 
 This library makes reading and deserializing local JSON files with pure Swift easy.
 
+## Table of contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [Why](#why)
+- [License](#license)
+
 ## Installation
 
-*Will be added soon*
+Add the following line to your `Package.swift` dependencies:
+
+`.Package(url: "https://github.com/mobileka/newbson.git", majorVersion: 1, minor: 0),`
+
+Run `swift build`.
 
 ## Usage
 
-*Let me try it myself and I'll tell you how ;)*
+```
+let newbson = Newbson(path: "path/to/json/file.json")
+
+do {
+	let json = try newbson.read()
+} catch {
+	// oops, it wasn't able to read the file
+}
+```
+
+Now you have `Any?` in your `json` constant.
+
+To be able to access the contents of your JSON, you have to cast it to a native Swift data structure.
+
+* If your JSON is something like this:
+
+`{"some" : "value"}`
+
+then it has to be a dictionary with keys and values of the `String` type:
+
+`let json = try newbson.read() as! [String : String]`
+
+* If JSON looks like this:
+
+`[1, 2, 3]`
+
+then it has to be an array of integers:
+
+`let json = try newbson.read() as! [Int]`
+
+* JSON: `[1, 2, "three"]` -> `as! [Any]`
+
+* JSON: `{"string": "I'm a string", "int": 1}` -> `as! [String : Any]`
+
+I hope you got the idea.
+
+But what to do when you don't know what is the structure of your JSON?
+
+In this case you have to cast it with `?` sign instead of `!` and check the result:
+
+```
+if let json = try newbson.read() as? [String : String] {
+	// it's a dictionary with keys and values of the `String` type
+	if let value = json["key"] {
+		// sweet, you did it, you have your String value
+	}
+} else if let json = try newbson.read() as? [String : Any] {
+	// it's a dictionary
+	if let value = json["key"] {
+		if value is String {
+			// you have a String
+		} else if value is Int {
+			// you get the idea
+		}
+	}
+} else if let json = try newbson.read() as? [Any] {
+	// it's an array
+} else {
+	// what the hell is it?!
+}
+```
 
 ## Why
 

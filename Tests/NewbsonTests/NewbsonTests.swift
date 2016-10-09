@@ -36,7 +36,6 @@ class NewbsonTests: BaseTestCase {
         XCTAssertEqual(expect, result)
     }
 
-
     func testReads() throws {
         let path = workingDir()! + "/Tests/NewbsonTests/resources/simple.json"
         let newbson = Newbson(path: path)

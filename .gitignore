@@ -2,3 +2,5 @@
 /.build
 /Packages
 /*.xcodeproj
+/node_modules
+package.json
