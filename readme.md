@@ -1,12 +1,12 @@
 "Newbson" comes from "Newbie + JSON".
 
-This library makes reading and deserializing local JSON files with pure Swift easy.
+This library makes reading and deserializing local JSON files with pure Swift [relatively] easy.
 
 ## Table of contents
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Why](#why)
+- [Why?](#why)
 - [License](#license)
 
 ## Installation
@@ -31,7 +31,7 @@ do {
 
 Now you have `Any?` in your `json` constant.
 
-To be able to access the contents of your JSON, you have to cast it to a native Swift data structure.
+To be able to access contents of your JSON, you have to cast it to a native Swift data structure.
 
 * If your JSON is something like this:
 
@@ -81,7 +81,22 @@ if let json = try newbson.read() as? [String : String] {
 }
 ```
 
-## Why
+You can also do the following:
+
+```
+// get contents of the file
+let contents = try newbson.getContents()
+
+// get file contents as an array of bytes (`[UInt8]`)
+let bytes = try newbson.getBytes()
+
+// get file contents as `Data`
+let jsonData = try newbson.getData()
+```
+
+It can be useful because some JSON libraries are able to serialize only one of the above data types.
+
+## Why?
 
 As a person coming from PHP, Ruby, JavaScript and other dynamically typed languages, I find reading and deserializing local JSON files in Swift difficult.
 
@@ -96,7 +111,7 @@ Another problem is related to the current position of Swift: it's being mainly u
 
 All the above makes a simple task of JSON handling hard for newbies like me.
 
-I wanted to make it as simple as in dynamically typed languages and make lives of fellow newbies a little bit easier :)
+I tried to make it a bit simpler for fellow newbies ;)
 
 ## License
 
