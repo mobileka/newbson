@@ -55,7 +55,7 @@ then it has to be an array of integers:
 
 I hope you got the idea.
 
-But what to do when you don't know what is the structure of your JSON?
+But what if don't know the structure of the JSON?
 
 In this case you have to cast it with `?` sign instead of `!` and check the result:
 
@@ -90,7 +90,7 @@ Generally, it requires four steps:
 1. Read a file as a `String`
 2. Convert it to an array of bytes `[UInt8]`
 3. Convert the array to `Data`
-4. And finaly deserialize it
+4. And finally deserialize it
 
 Another problem is related to the current position of Swift: it's being mainly used for iOS and Mac development, so sometimes it's hard to find answers working equally well on Mac and Linux platforms.
 
