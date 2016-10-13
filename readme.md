@@ -91,11 +91,11 @@ if let jsonData = newbson.getData() {
 }
 ```
 
-It can be useful because other JSON libraries nostly work with the above data type
+It can be useful because other JSON libraries mostly work with the above data type
 
 ## Why?
 
-I've originally created this library because I just started learning Swift and I didn't know the shortest way to read a local JSON file at that moment.
+I originally created this library because I just started learning Swift and I didn't know the shortest way to read a local JSON file at that moment.
 
 Another problem is related to the current position of Swift: it's being mainly used for iOS and Mac development, so sometimes it's hard to find answers working equally well on Mac and Linux platforms.
 
