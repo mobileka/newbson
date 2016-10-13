@@ -6,25 +6,19 @@ public class Newbson {
     public init(path: String) {
         self.path = path
     }
-    
-    public func getContents() throws -> String {
-    	return try String(contentsOfFile: path)
-    }
 
-    public func getBytes() throws -> [UInt8] {
-    	let contents = try getContents()
+    public func getData() -> Data? {
+        guard let fh = FileHandle(forReadingAtPath: path) else {
+            return nil
+        }
 
-    	return [UInt8](contents.utf8)
-    }
-
-    public func getData() throws -> Data {
-        let bytes = try getBytes()
-
-        return  Data(bytes: bytes)
+        return fh.readDataToEndOfFile()
     }
 
     public func read() throws -> Any? {
-        let data = try getData()
+        guard let data = getData() else {
+            throw NewbsonError.fileNotFound(path: path)
+        }
         
         return try JSONSerialization.jsonObject(with: data)
     }

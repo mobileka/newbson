@@ -24,8 +24,9 @@ let newbson = Newbson(path: "path/to/json/file.json")
 
 do {
 	let json = try newbson.read()
-} catch {
+} catch e as NewbsonError.fileNotFound(let path) {
 	// oops, it wasn't able to read the file
+	// you can examine the "path" variable for additional information
 }
 ```
 
@@ -84,34 +85,21 @@ if let json = try newbson.read() as? [String : String] {
 You can also do the following:
 
 ```
-// get contents of the file
-let contents = try newbson.getContents()
-
-// get file contents as an array of bytes (`[UInt8]`)
-let bytes = try newbson.getBytes()
-
 // get file contents as `Data`
-let jsonData = try newbson.getData()
+if let jsonData = newbson.getData() {
+	// you have it
+}
 ```
 
-It can be useful because some JSON libraries are able to serialize only one of the above data types.
+It can be useful because other JSON libraries nostly work with the above data type
 
 ## Why?
 
-As a person coming from PHP, Ruby, JavaScript and other dynamically typed languages, I find reading and deserializing local JSON files in Swift difficult.
-
-Generally, it requires four steps:
-
-1. Read a file as a `String`
-2. Convert it to an array of bytes `[UInt8]`
-3. Convert the array to `Data`
-4. And finally deserialize it
+I've originally created this library because I just started learning Swift and I didn't know the shortest way to read a local JSON file at that moment.
 
 Another problem is related to the current position of Swift: it's being mainly used for iOS and Mac development, so sometimes it's hard to find answers working equally well on Mac and Linux platforms.
 
-All the above makes a simple task of JSON handling hard for newbies like me.
-
-I tried to make it a bit simpler for fellow newbies ;)
+I still believe that this library provides a cleaner API, so it's still can be useful sometimes. It's also useful for newbies as a source of documentation and a simple example of testing with XCTest and AAA methodology (when possible).
 
 ## License
 

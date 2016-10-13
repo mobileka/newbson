@@ -6,34 +6,23 @@ class NewbsonTests: BaseTestCase {
         let _ = Newbson(path: "String!")
     }
 
-    func testReturnsFileContents() throws {
-        let path = workingDir()! + "/Tests/NewbsonTests/resources/simple.json"
-        let newbson = Newbson(path: path)
-        let expect = "{\"key\": \"value\"}"
-
-        let result = try newbson.getContents()
-
-        XCTAssertEqual(expect, result)
-    }
-
-    func testReturnsBytes() throws {
-        let path = workingDir()! + "/Tests/NewbsonTests/resources/simple.json"
-        let newbson = Newbson(path: path)
-        let expect = [UInt8]("{\"key\": \"value\"}".utf8)
-
-        let result = try newbson.getBytes()
-
-        XCTAssertEqual(expect, result)
-    }
-
-    func testReturnsData() throws {
+    func testReturnsData() {
         let path = workingDir()! + "/Tests/NewbsonTests/resources/simple.json"
         let newbson = Newbson(path: path)
         let expect = Data(bytes: [UInt8]("{\"key\": \"value\"}".utf8))
 
-        let result = try newbson.getData()
+        let result = newbson.getData()
 
         XCTAssertEqual(expect, result)
+    }
+
+    func testGetDataReturnsNil() {
+        let path = workingDir()! + "wrong/path"
+        let newbson = Newbson(path: path)
+
+        if let _ = newbson.getData() {
+            XCTFail("The result is expected to be nil")
+        }
     }
 
     func testReads() throws {
@@ -46,13 +35,27 @@ class NewbsonTests: BaseTestCase {
         XCTAssertEqual(expect, result)
     }
 
+    func testReadThrowsException() throws {
+        let path = workingDir()! + "wrong/path"
+        let newbson = Newbson(path: path)
+
+        do {
+            let _ = try newbson.read()
+            XCTFail("`read` method should throw an error")
+        } catch let e as NewbsonError {
+            XCTAssertEqual(e, NewbsonError.fileNotFound(path: path))
+        } catch {
+            XCTFail("`read` method throws a wrong error")
+        }
+    }
+
     static var allTests : [(String, (NewbsonTests) -> () throws -> Void)] {
         return [
             ("testInitialization", testInitialization),
-            ("testReturnsFileContents", testReturnsFileContents),
-            ("testReturnsBytes", testReturnsBytes),
             ("testReturnsData", testReturnsData),
+            ("testGetDataReturnsNil", testGetDataReturnsNil),
             ("testReads", testReads),
+            ("testReadThrowsException", testReadThrowsException),
         ]
     }
 }
